@@ -61,7 +61,6 @@ class SimpleFacerec:
         rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
         face_locations = face_recognition.face_locations(rgb_small_frame,2)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-        
         face_names = []
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
@@ -80,15 +79,34 @@ class SimpleFacerec:
             if matches[best_match_index]:
                 name = self.known_face_names[best_match_index]
             face_names.append(name)
-
-            if (name == 'Unknown'):
-                ser.write(b'1')
-                print(10)
+            x1=None
+            
+            x1 =  face_locations[0][3]
+            
+            middle=True
+            if(x1<90 and name=='Unknown' ):
+                 print('left')
+                 ser.write(b'2')
+                 print(x1)
+                 middle=False
+            elif(x1>140 and name=='Unknown' and middle):
                 
-            else :
+                ser.write(b'7')
+                print('right')
+                print(x1)
+                middle=False
+
+            elif (name == 'Unknown'):
+                ser.write(b'1')
+                # ser.write(b'x1')
+                # print(10)
+                print(x1)
+            else:
                 ser.write(b'5')
+                print(5)
         if  len(face_names)==0:
             ser.write(b'5') 
+            print(5)
 
         # Convert to numpy array to adjust coordinates with frame resizing quickly
         face_locations = np.array(face_locations)

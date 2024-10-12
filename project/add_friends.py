@@ -1,5 +1,5 @@
 import cv2
-import face_recognition
+# import face_recognition
 import os
 import glob
 import time
@@ -27,17 +27,17 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Detect faces in the frame
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=8, minSize=(30, 30))
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=10, minSize=(30, 30))
     
 
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        if len(faces) > 0 and current_time - last_time >= tar:
-            file_path = os.path.join(save_directory,f' {i} friend.jpg' )
-            cv2.imwrite(file_path, frame)  
-            print(f"Frame saved as '{file_path}'")
-            i+=1
-            last_time = current_time
+        # if len(faces) > 0 and current_time - last_time >= tar:
+        #     file_path = os.path.join(save_directory,f' {i} friend.jpg' )
+        #     cv2.imwrite(file_path, frame)  
+        #     print(f"Frame saved as '{file_path}'")
+        #     i+=1
+        #     last_time = current_time
        
         if cv2.waitKey(1) & 0xFF == ord('s'):
          file_path = os.path.join(save_directory,f' {i} friend.jpg' )
