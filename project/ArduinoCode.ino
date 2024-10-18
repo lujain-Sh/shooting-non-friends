@@ -51,7 +51,7 @@ void loop() {
               break;
             }
             if(data=='1') { exitt=true; current_pos1=p;  break; }}
-            if(p==180) {current_pos1=180;current_pos2=180;}
+            if(p>=175) {current_pos1=180;current_pos2=180;}
           myservo.write(p) ;              // tell servo to go to position in variable 'p'
           delay(1000);                       // waits x ms for the servo to reach the position
           
@@ -74,7 +74,7 @@ void loop() {
               break;
             }
             if(data =='1') { exitt=true; current_pos2=p; break;}}
-            if(p==0) {current_pos2=0;current_pos1=0;}
+            if(p<=5) {current_pos2=0;current_pos1=0;}
            myservo.write(p)  ;                   // tell servo to go to position in variable 'pos'
            delay(1000);   // waits 15 ms for the servo to reach the position
          // p/180*1960+20
