@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arduino Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            text-align: center; 
+            margin-top: 50px; 
+            font-family: Arial, sans-serif; 
+            background-color: #f0f0f0;
+        }
+        button { 
+            padding: 20px; 
+            font-size: 40px; /* Increased font size for better visibility of symbols */
+            margin: 10px; 
+            width: 100px; /* Adjusted width to fit symbols */
+            height: 100px; /* Added height for a more circular button */
+            border: none; 
+            border-radius: 50%; /* Made buttons circular */
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s;
+            user-select: none; /* Prevent text selection on long press */
+        }
+        #onButton { 
+            background-color: #4CAF50; 
+            color: white; 
+        }
+        #offButton { 
+            background-color: #f44336; 
+            color: white; 
+        }
+        #launchButton {
+            background-color: #2196F3; /* Blue color for Launch */
+            color: white;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        #status { 
+            margin-top: 20px; 
+            font-size: 18px; 
+            white-space: pre-wrap; /* Preserve line breaks in status messages */
+        }
+        #arduinoOutput {
+            margin-top: 20px; 
+            font-size: 18px; 
+            white-space: pre-wrap; /* Preserve line breaks in Arduino output */
+            color: #333; /* Text color for visibility */
+            border: 1px solid #ccc; /* Add a border */
+            padding: 10px; /* Add some padding */
+            background-color: #fff; /* Background color */
+            max-height: 200px; /* Optional: Set a max height */
+            overflow-y: auto; /* Optional: Enable scroll if content exceeds max height */
+        }
+    </style>
+    <script>
+        // Replace with your server's IP address and port
+        const SERVER_URL = 'http://192.168.0.113:5000/control';  // Update with your server's IP
+        const OUTPUT_URL = 'http://192.168.0.113:5000/arduino_output';  // URL to get Arduino output
+
+        // Function to send command to the server
+        function sendCommand(cmd) {
+            fetch(SERVER_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({command: cmd}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.status === 'success') {
+    document.getElementById('status').innerText = `Command "${data.command}" sent successfully!\nArduino Response: ${data.response}`;
+} else {
+    document.getElementById('status').innerText = `Error: ${data.message}`;
+}
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('status').innerText = 'Error sending command.';
+            });
+        }
+// Function to update Arduino output
+function updateArduinoOutput() {
+            fetch(OUTPUT_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const arduinoDiv = document.getElementById('arduinoOutput');
+                    if (data.output) {
+    arduinoDiv.innerText = `Arduino Output: ${data.output}`;
+} else {
+    arduinoDiv.innerText = 'Arduino Output: No data received yet.';
+    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching Arduino output:', error);
+                    document.getElementById('arduinoOutput').innerText = 'Error fetching Arduino output.';
+                });
+        }
+
+        // Set an interval to fetch Arduino output every second
+        setInterval(updateArduinoOutput, 1000);
+
+        // Function to handle continuous sending
+        function setupContinuousSending(buttonId, command) {
+            let intervalId = null;
+
+            const button = document.getElementById(buttonId);
+
+            // Function to start sending commands at intervals
+            const startSending = () => {
+                if (intervalId === null) { // Prevent multiple intervals
+                    sendCommand(command); // Send immediately on press
+                    intervalId = setInterval(() => {
+                        sendCommand(command);
+                    }, 100); // Send every 100ms; adjust as needed
+                }
+            };
+
+            // Function to stop sending commands
+            const stopSending = () => {
+                if (intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+            };
+
+            // Mouse events
+            button.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                startSending();
+            });
+
+            button.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                stopSending();
+            });
+
+            button.addEventListener('mouseleave', (e) => {
+                e.preventDefault();
+                stopSending();
+            });
+
+            // Touch events for mobile compatibility
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                startSending();
+            });
+
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                stopSending();
+            });
+
+            button.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                stopSending();
+            });
+        }
+
+        // Initialize continuous sending for each button
+        document.addEventListener('DOMContentLoaded', () => {
+            setupContinuousSending('onButton', '8');      // Command '8' for "Turn LED On"
+            setupContinuousSending('offButton', '9');     // Command '9' for "Turn LED Off"
+            setupContinuousSending('launchButton', '2');  // Command '2' for "Launch"
+        });
+    </script>
+</head>
+<body>
+    <h1>Arduino Control Panel</h1>
+    <button id="onButton" title="Turn LED On">&#8630;</button>
+    <button id="offButton" title="Turn LED Off">&#8631;</button>
+    <button id="launchButton" title="Launch">&#128640;</button> <!-- Rocket Emoji for Launch -->
+    <div id="status"></div>
+    <div id="arduinoOutput">Arduino Output: Waiting for updates...</div> <!-- Area to display Arduino output -->
+</body>
+</html>        
