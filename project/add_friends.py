@@ -32,12 +32,12 @@ while True:
 
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        # if len(faces) > 0 and current_time - last_time >= tar:
-        #     file_path = os.path.join(save_directory,f' {i} friend.jpg' )
-        #     cv2.imwrite(file_path, frame)  
-        #     print(f"Frame saved as '{file_path}'")
-        #     i+=1
-        #     last_time = current_time
+        if len(faces) > 0 and current_time - last_time >= tar:
+            file_path = os.path.join(save_directory,f' {i} friend.jpg' )
+            cv2.imwrite(file_path, frame)  
+            print(f"Frame saved as '{file_path}'")
+            i+=1
+            last_time = current_time
        
         if cv2.waitKey(1) & 0xFF == ord('s'):
          file_path = os.path.join(save_directory,f' {i} friend.jpg' )

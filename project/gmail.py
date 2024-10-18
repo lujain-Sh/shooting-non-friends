@@ -1,7 +1,7 @@
 from mailer import Mailer
 from mailer import Message
-import threading
-import asyncio
+# import threading
+# import asyncio
 # import smtplib
 # Initialize Mailer with the SMTP host and port
 # lock = threading.Lock()
