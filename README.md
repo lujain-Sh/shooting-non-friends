@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/lujain-Sh/shooting-non-friends">
-    <img src="images/logo.png" alt="Logo" width="130" height="130">
+    <img src="assets/logo.png" alt="Logo" width="140" height="140">
   </a>
 
 <h3 align="center">Camera_Security_Detecting_Faces</h3>
@@ -197,7 +197,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+<!-- Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com -->
 
 Project Link: [https://github.com/lujain-Sh/shooting-non-friends](https://github.com/lujain-Sh/shooting-non-friends)
 
@@ -219,7 +219,7 @@ Project Link: [https://github.com/lujain-Sh/shooting-non-friends](https://github
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/maskedman221
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/lujain-Sh/shooting-non-friends/network/members
 <!-- [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
